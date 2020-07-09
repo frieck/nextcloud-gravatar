@@ -64,12 +64,13 @@ class Notifier implements INotifier {
 	 * @return INotification
 	 * @throws \InvalidArgumentException When the notification was not prepared by a notifier
 	 */
-	public function prepare(INotification $notification, $languageCode) {
+	public function prepare(INotification $notification, $languageCode): INotification {
 		if ($notification->getApp() !== Application::APP_ID) {
 			throw new \InvalidArgumentException();
 		}
 
-		$iconPath = $this->url->getAbsoluteURL('/svg/gravatar/app/000?v=1');
+
+		$iconPath = $this->url->getAbsoluteURL('index.php/svg/gravatar/app?color=000&v=1');
 		$notification->setIcon($iconPath);
 
 		$l = $this->lFactory->get(Application::APP_ID, $languageCode);
@@ -115,5 +116,25 @@ class Notifier implements INotifier {
 				$notification->addParsedAction($action);
 			}
 		}
+    }
+    
+    /**
+	 * Identifier of the notifier, only use [a-z0-9_]
+	 *
+	 * @return string
+	 * @since 17.0.0
+	 */
+	public function getID(): string {
+		return 'gravatar';
+    }
+    
+    /**
+	 * Human readable name describing the notifier
+	 *
+	 * @return string
+	 * @since 17.0.0
+	 */
+	public function getName(): string {
+		return $this->lFactory->get('gravatar')->t('Gravatar');
 	}
 }

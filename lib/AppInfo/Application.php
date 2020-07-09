@@ -31,7 +31,7 @@ use OCA\Gravatar\Handler\DirectUpdateSyncUserAvatarHandler;
 use OCA\Gravatar\Handler\SyncUserAvatarHandler;
 use OCA\Gravatar\Hooks\UserSessionHook;
 use OCA\Gravatar\Notification\Notifier;
-use OCA\Gravatar\Settings\SecuritySettings;
+use OCA\Gravatar\Settings\Admin;
 use \OCP\AppFramework\App;
 use OCP\IContainer;
 use OCP\IServerContainer;
@@ -69,7 +69,7 @@ class Application extends App {
 
 		$container->registerService(SyncUserAvatarHandler::class, function() use ($container, $server) {
 			$config = $server->getConfig();
-			$askUser = $config->getAppValue(Application::APP_ID, SecuritySettings::SETTING_ASK_USER, 'no') === 'yes';
+			$askUser = $config->getAppValue(Application::APP_ID, Admin::SETTING_ASK_USER, 'no') === 'yes';
 
 			if ($askUser === true) {
 				$directUpdateSyncUserAvatarHandler = $container->query(DirectUpdateSyncUserAvatarHandler::class);
@@ -98,36 +98,6 @@ class Application extends App {
 	 * @return void
 	 */
 	private function registerNotifier(IServerContainer $server, IContainer $container) {
-		$container->registerService(Notifier::class, function() use ($server) {
-			$lFactory = $server->getL10NFactory();
-			$urlGenerator = $server->getURLGenerator();
-			return new Notifier($lFactory, $urlGenerator);
-		});
-
-		$notificationManager = $server->getNotificationManager();
-		$notificationManager->registerNotifier(
-			function() use ($container) {
-				return $this->getContainer()->query(Notifier::class);
-			},
-			function () {
-				return [
-					'id' => Application::APP_ID,
-					'name' => Application::APP_NAME,
-				];
-			}
-		);
-	}
-
-	/**
-	 * Registers the Gravatar user settings if the "ask user" setting is enabled.
-	 *
-	 * @return void
-	 */
-	public function registerUserSettings() {
-		$config = $this->getContainer()->getServer()->getConfig();
-		$askUser = $config->getAppValue(Application::APP_ID, SecuritySettings::SETTING_ASK_USER, 'no') === 'yes';
-		if ($askUser === true) {
-			\OCP\App::registerPersonal(Application::APP_ID, 'personal');
-		}
+        $this->getContainer()->getServer()->getNotificationManager()->registerNotifierService(Notifier::class);
 	}
 }

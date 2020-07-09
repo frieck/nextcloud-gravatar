@@ -26,7 +26,7 @@ namespace OCA\Gravatar\Controller;
 
 use OCA\Gravatar\AppInfo\Application;
 use OCA\Gravatar\Handler\DirectUpdateSyncUserAvatarHandler;
-use OCA\Gravatar\Settings\SecuritySettings;
+use OCA\Gravatar\Settings\Admin;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\IConfig;
@@ -104,13 +104,15 @@ class SettingsController extends Controller {
 	private function setAskUserSetting(bool $enabled): JSONResponse {
 		$this->config->setAppValue(
 			Application::APP_ID,
-			SecuritySettings::SETTING_ASK_USER,
+			Admin::SETTING_ASK_USER,
 			$enabled ? 'yes' : 'no'
 		);
 		return new JSONResponse(['askUser' => $enabled,]);
 	}
 
 	/**
+     * @NoAdminRequired
+     * 
 	 * Sets the user gravatar setting to enabled and does a one time gravatar sync.
 	 *
 	 * @return JSONResponse
@@ -122,6 +124,8 @@ class SettingsController extends Controller {
 	}
 
 	/**
+     * @NoAdminRequired
+     * 
 	 * Sets the user gravatar setting to disabled.
 	 *
 	 * @return JSONResponse

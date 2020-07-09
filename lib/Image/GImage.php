@@ -1,6 +1,8 @@
 <?php
 namespace OCA\Gravatar\Image;
 
+use OCP\IImage;
+
 /**
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  *
@@ -46,7 +48,7 @@ namespace OCA\Gravatar\Image;
  *
  * This is a copy of the Nextcloud internal image class!
  */
-class GImage implements \OCP\IImage {
+class GImage implements IImage {
 	/** @var false|resource */
 	protected $resource = false; // tmp resource.
 	/** @var int */
@@ -721,7 +723,67 @@ class GImage implements \OCP\IImage {
 		imagedestroy($this->resource);
 		$this->resource = $process;
 		return true;
-	}
+    }
+    
+    /**
+	 * create a copy of this image
+	 *
+	 * @return IImage
+	 * @since 19.0.0
+	 */
+    public function copy(): IImage {
+        $image = new GImage(null, $this->logger, $this->config);
+		$image->resource = imagecreatetruecolor($this->width(), $this->height());
+		imagecopy(
+			$image->resource(),
+			$this->resource(),
+			0,
+			0,
+			0,
+			0,
+			$this->width(),
+			$this->height()
+		);
+
+		return $image;
+    }
+
+    /**
+	 * create a new cropped copy of this image
+	 *
+	 * @param int $x Horizontal position
+	 * @param int $y Vertical position
+	 * @param int $w Width
+	 * @param int $h Height
+	 * @return IImage
+	 * @since 19.0.0
+	 */
+	public function cropCopy(int $x, int $y, int $w, int $h): IImage {
+        return null;
+    }
+
+    /**
+	 * create a new resized copy of this image
+	 *
+	 * @param integer $maxSize The maximum size of either the width or height.
+	 * @return IImage
+	 * @since 19.0.0
+	 */
+    public function resizeCopy(int $maxSize): IImage {
+        return null;
+    }
+    
+	/**
+	 * create a new resized copy of this image
+	 *
+	 * @param int $width
+	 * @param int $height
+	 * @return IImage
+	 * @since 19.0.0
+	 */
+	public function preciseResizeCopy(int $width, int $height): IImage {
+        return null;
+    }
 
 	/**
 	 * Crops the image to the middle square. If the image is already square it just returns.

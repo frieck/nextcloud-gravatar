@@ -21,41 +21,37 @@
 
 $(document).ready(function() {
 
-	var askUserCheckbox = $('#ask-user');
-	var askUserLoader = $('#ask-user-loading');
+    var askUserCheckbox = $('#ask-user');
+    var askUserLoader = $('#ask-user-loading');
 
-	function showAskUserLoading() {
-		askUserLoader.show();
-	}
+    function showAskUserLoading() {
+        askUserLoader.show();
+    }
 
-	function hideAskUserLoading() {
-		askUserLoader.hide();
-	}
+    function hideAskUserLoading() {
+        askUserLoader.hide();
+    }
 
-	askUserCheckbox.on('change', function() {
-		var askUser = askUserCheckbox.is(':checked');
-		var url = OC.generateUrl('/apps/gravatar/settings/askUser/');
+    askUserCheckbox.on('change', function() {
+        var askUser = askUserCheckbox.is(':checked');
+        var url = OC.generateUrl('/apps/gravatar/settings/askUser/');
 
-		if (askUser === true) {
-			url += 'enable';
-		} else {
-			url += 'disable';
-		}
+        if (askUser === true) {
+            url += 'enable';
+        } else {
+            url += 'disable';
+        }
 
-		showAskUserLoading();
+        showAskUserLoading();
 
-		$.ajax({
-			type: 'GET',
-			dataType: 'json',
-			url: url,
-			success: function(resp) {
-				hideAskUserLoading();
-			},
-			error: function() {
-				// revert on error
-				askUserCheckbox.prop('checked', !askUser);
-				hideAskUserLoading();
-			}
-		});
-	});
+        $.post(url)
+            .done(function() {
+                hideAskUserLoading();
+            })
+            .fail(function() {
+                // revert on error
+                askUserCheckbox.prop('checked', !askUser);
+                hideAskUserLoading();
+            });
+    });
 });

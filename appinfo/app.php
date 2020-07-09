@@ -25,7 +25,7 @@ declare(strict_types=1);
 use OCA\Gravatar\AppInfo\Application;
 
 $app = new Application();
-$app->registerUserSettings();
 $container = $app->getContainer();
 $userSessionHooks = $container->query(\OCA\Gravatar\Hooks\UserSessionHook::class);
 $userSessionHooks->register();
+

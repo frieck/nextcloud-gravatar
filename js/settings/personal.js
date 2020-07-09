@@ -21,33 +21,29 @@
 
 $(document).ready(function() {
 
-	var useGravatarCheckbox = $('#use-gravatar');
-	var useGravatarLoader = $('#use-gravatar-loading');
+    var useGravatarCheckbox = $('#use-gravatar');
+    var useGravatarLoader = $('#use-gravatar-loading');
 
-	useGravatarCheckbox.on('change', function() {
-		var askUser = useGravatarCheckbox.is(':checked');
-		var url = OC.generateUrl('/apps/gravatar/settings/useGravatar/');
+    useGravatarCheckbox.on('change', function() {
+        var askUser = useGravatarCheckbox.is(':checked');
+        var url = OC.generateUrl('/apps/gravatar/settings/useGravatar/');
 
-		if (askUser === true) {
-			url += 'enable';
-		} else {
-			url += 'disable';
-		}
+        if (askUser === true) {
+            url += 'enable';
+        } else {
+            url += 'disable';
+        }
 
-		useGravatarLoader.show();
+        useGravatarLoader.show();
 
-		$.ajax({
-			type: 'GET',
-			dataType: 'json',
-			url: url,
-			success: function(resp) {
-				useGravatarLoader.hide();
-			},
-			error: function() {
-				// revert on error
-				useGravatarCheckbox.prop('checked', !askUser);
-				useGravatarLoader.hide();
-			}
-		});
-	});
+        $.post(url)
+            .done(function() {
+                useGravatarLoader.hide();
+            })
+            .fail(function() {
+                // revert on error
+                useGravatarCheckbox.prop('checked', !askUser);
+                useGravatarLoader.hide();
+            });
+    });
 });

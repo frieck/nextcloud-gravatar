@@ -3,7 +3,7 @@
       xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
     <id>gravatar</id>
     <name>Gravatar</name>
-    <summary>Adds Gravatar support to Nextcloud</summary>
+    summary>Adds Gravatar support to Nextcloud</summary>
     <description><![CDATA[This app queries the Gravatar service for getting user avatars.
 
 **Privacy note**
@@ -17,9 +17,10 @@ See also their privacy policy: https://automattic.com/privacy/ .]]></description
     <category>integration</category>
     <bugs>https://github.com/weeman1337/nextcloud-gravatar/issues</bugs>
     <dependencies>
-        <nextcloud min-version="14" max-version="19"/>
+        <nextcloud min-version="19" max-version="19"/>
     </dependencies>
     <settings>
-        <admin>OCA\Gravatar\Settings\SecuritySettings</admin>
+        <admin>OCA\Gravatar\Settings\Admin</admin>
+        <personal>OCA\Gravatar\Settings\Personal</personal>
     </settings>
 </info>

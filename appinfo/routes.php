@@ -24,9 +24,9 @@ declare(strict_types=1);
 
 return [
 	'routes' => [
-		['name' => 'Settings#enableAskUserSetting', 'url' => '/settings/askUser/enable', 'verb' => 'GET',],
-		['name' => 'Settings#disableAskUserSetting', 'url' => '/settings/askUser/disable', 'verb' => 'GET',],
-		['name' => 'Settings#enableUserGravatar', 'url' => '/settings/useGravatar/enable', 'verb' => 'GET',],
-		['name' => 'Settings#disableUserGravatar', 'url' => '/settings/useGravatar/disable', 'verb' => 'GET',],
+		['name' => 'settings#enable_ask_user_setting', 'url' => '/settings/askUser/enable', 'verb' => 'POST',],
+		['name' => 'settings#disable_ask_user_setting', 'url' => '/settings/askUser/disable', 'verb' => 'POST',],
+		['name' => 'settings#enable_user_gravatar', 'url' => '/settings/useGravatar/enable', 'verb' => 'POST',],
+		['name' => 'settings#disable_user_gravatar', 'url' => '/settings/useGravatar/disable', 'verb' => 'POST',],
 	]
 ];

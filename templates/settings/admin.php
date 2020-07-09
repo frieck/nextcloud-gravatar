@@ -22,29 +22,28 @@ declare(strict_types=1);
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-script(\OCA\Gravatar\AppInfo\Application::APP_ID, 'settings/personal');
+script(\OCA\Gravatar\AppInfo\Application::APP_ID, 'settings/security');
 
 ?>
-<?php if($_['askUser']) { ?>
+
 <div id="gravatar" class="section">
-<h2>
+	<h2>
 		<?php p(\OCA\Gravatar\AppInfo\Application::APP_NAME); ?>
-		<img id="use-gravatar-loading" class="inlineblock" style="display: none;" src="<?php p(\OC::$server->getURLGenerator()->getAbsoluteURL(image_path('gravatar', 'loading-small.gif'))); ?>">
+		<img id="ask-user-loading" class="inlineblock" style="display: none;" src="<?php p(\OC::$server->getURLGenerator()->getAbsoluteURL(image_path('gravatar', 'loading-small.gif'))); ?>">
 	</h2>
 	<p class="settings-hint">
-		<?php p($l->t('For Gravatar to work it sends a hashed version of your email address to Gravatar.')); ?>
+		<?php p($l->t('For Gravatar to work it sends a hashed version of the users\' email addresses to Gravatar.')); ?>
         <br />
-        <?php p($l->t('If you don\'t want this you can disable Gravatar here.')); ?>
+        <?php p($l->t('Some users may not feel comfortable with that.')); ?>
 	</p>
 	<p>
 		<input
-			id="use-gravatar"
-			name="use-gravatar"
+			id="ask-user"
+			name="ask-user"
 			type="checkbox"
 			class="checkbox"
 			value="1"
-			<?php if ($_['useGravatar']): ?> checked="checked"<?php endif; ?>>
-		<label for="use-gravatar"><?php p($l->t('Use Gravatar for loading your avatar')); ?></label>
+			<?php if ($_['askUser']): ?> checked="checked"<?php endif; ?>>
+		<label for="ask-user"><?php p($l->t('Enable users to control whether to use Gravatar or not')); ?></label>
 	</p>
 </div>
-<?php } ?>

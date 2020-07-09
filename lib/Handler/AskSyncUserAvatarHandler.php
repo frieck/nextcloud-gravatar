@@ -43,7 +43,7 @@ class AskSyncUserAvatarHandler implements SyncUserAvatarHandler {
 	/**
 	 * @var IConfig
 	 */
-	private $config;
+    private $config;
 
 	/**
 	 * @var DirectUpdateSyncUserAvatarHandler
@@ -95,13 +95,17 @@ class AskSyncUserAvatarHandler implements SyncUserAvatarHandler {
 	private function createAskGravatarNotification(IUser $user) {
 		$notification = $this->notificationManager->createNotification();
 
+        $urlGenerator = \OC::$server->getURLGenerator();
+        $enable = $urlGenerator->linkToRouteAbsolute('gravatar.settings.enable_user_gravatar');
+        $disable = $urlGenerator->linkToRouteAbsolute('gravatar.settings.disable_user_gravatar');
+
 		$acceptAction = $notification->createAction();
-		$acceptAction->setLabel('confirm')
-			->setLink('/apps/gravatar/settings/useGravatar/enable', 'GET');
+        $acceptAction->setLabel('confirm')
+			->setLink($enable, 'POST');
 
 		$declineAction = $notification->createAction();
 		$declineAction->setLabel('decline')
-			->setLink('/apps/gravatar/settings/useGravatar/disable', 'GET');
+        ->setLink($disable, 'POST');
 
 		$notification->setApp(Application::APP_ID)
 			->setUser($user->getUID())
